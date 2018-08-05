@@ -50,7 +50,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 		weights.push_back(1.0);
 
 		// Print your samples to the terminal.
-		cout << "Initialization Sample " << i + 1 << ": " << sample_x << ", " << sample_y << " " << endl;
+		// cout << "Initialization Sample " << i + 1 << ": " << sample_x << ", " << sample_y << " " << endl;
 	}
 
 	/* Mark Initialization done*/
@@ -157,20 +157,20 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 		double weight = 1.0;
 
 		for (unsigned int j = 0; j < map_observations.size(); j++) {
-
 			LandmarkObs d_observation = map_observations[j];
 			double x_obs = d_observation.x;
 			double y_obs = d_observation.y;
 
-			Map::single_landmark_s landmark = map_landmarks.landmark_list[d_observation.id];
-			particles[i].associations.push_back(landmark.id_i);
-			particles[i].sense_x.push_back(landmark.x_f);
-			particles[i].sense_y.push_back(landmark.y_f);
+			LandmarkObs associated = predicted[d_observation.id];
+			particles[i].associations.push_back(associated.id);
+			particles[i].sense_x.push_back(associated.x);
+			particles[i].sense_y.push_back(associated.y);
 
 			double gauss_norm = 1.0 / (2 * M_PI * sig_x * sig_y);
-			double exponent = pow((x_obs - landmark.x_f), 2.0) / (2.0 * pow(sig_x, 2.0)) + pow((y_obs - landmark.y_f), 2.0) / (2.0 * pow(sig_y, 2.0));
+			double exponent = pow((x_obs - associated.x), 2.0) / (2.0 * pow(sig_x, 2.0)) + pow((y_obs - associated.y), 2.0) / (2.0 * pow(sig_y, 2.0));
 			weight *= (gauss_norm * exp(-1 * exponent));
 		}
+
 		particles[i].weight = weight;
 		weights[i] = weight;
 	}
