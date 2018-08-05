@@ -134,13 +134,15 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 			int landmark_id = map_landmarks.landmark_list[j].id_i;
 			double distant = dist(dp.x, dp.y, landmark_x, landmark_y);
 			if (distant < sensor_range) {
-				LandmarkObs temp;
+				LandmarkObs temp = LandmarkObs();
 				temp.id = landmark_id;
 				temp.x = landmark_x;
 				temp.y = landmark_y;
 				predicted.push_back(temp);
 			}
 		}
+
+		cout << "Weight " << i << " -  Landmark in sensor range: "  << predicted.size() <<endl;
 
 		dataAssociation(predicted, map_observations);
 
@@ -168,7 +170,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 
 		particles[i].weight = weight;
 		weights[i] = weight;
-		cout << "Update Weight " << i << endl;
+		cout << "Update Weight " << i << ":" << weight <<endl;
 	}
 	cout << "Update Weight Done. " << endl;
 }
