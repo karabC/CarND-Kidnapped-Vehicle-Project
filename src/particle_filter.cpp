@@ -30,7 +30,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	normal_distribution<double> distribution_theta(theta, std[2]);
 
 	/*Set the number of particles. */
-	num_particles = 100;
+	num_particles = 50;
 
 	/* Sample the Particles from distributions*/
 	for (int i = 0; i < num_particles; ++i) {
