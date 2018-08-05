@@ -29,7 +29,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	normal_distribution<double> distribution_y(y, std[1]);
 	normal_distribution<double> distribution_theta(theta, std[2]);
 
-	/*Set the number of particles. */
+	/*Set the number of particles. Tried 100/50/30  */
 	num_particles = 30;
 
 	/* Sample the Particles from distributions*/
@@ -127,6 +127,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 			map_observations.push_back(map_observation);
 		}
 
+		/* Filter the landmark that is out of sensor range*/
 		std::vector<LandmarkObs> predicted;
 		for (int j = 0; j < map_landmarks.landmark_list.size(); j++) {
 			float landmark_x = map_landmarks.landmark_list[j].x_f;
@@ -142,8 +143,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 			}
 		}
 
-		// cout << "Weight " << i << " -  Landmark in sensor range: "  << predicted.size() <<endl;
-
+		/* Find associated points*/
 		dataAssociation(predicted, map_observations);
 
 		particles[i].associations.clear();
@@ -165,17 +165,11 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 
 			double gauss_norm = 1.0 / (2 * M_PI * sig_x * sig_y);
 			double exponent = pow((x_obs - associated.x), 2.0) / (2.0 * pow(sig_x, 2.0)) + pow((y_obs - associated.y), 2.0) / (2.0 * pow(sig_y, 2.0));
-			double new_weight = (gauss_norm * exp(-1 * exponent));
-			// cout << "    exponent " << j << ":" << exponent << endl;
-			// cout << "    x - diff " << j << ":" << x_obs - associated.x << endl;
-			// cout << "    y - diff " << j << ":" << y_obs - associated.y << endl;
-			// cout << "  new_weight " << j << ":" << new_weight << endl;
-			weight *= new_weight;
+			weight *= (gauss_norm * exp(-1 * exponent));
 		}
 
 		particles[i].weight = weight;
 		weights[i] = weight;
-		// cout << "Update Weight " << i << ":" << weight <<endl;
 	}
 	cout << "Update Weight Done. " << endl;
 }
