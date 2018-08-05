@@ -10,6 +10,7 @@
 #include <iostream>
 #include <numeric>
 #include <math.h> 
+#include <float.h>
 #include <iostream>
 #include <sstream>
 #include <string>
