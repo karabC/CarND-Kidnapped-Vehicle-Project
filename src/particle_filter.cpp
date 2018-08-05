@@ -173,8 +173,10 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 	cout << "Update Weight Done. " << endl;
 }
 
+/*** Resample particles with replacement with probability proportional to their weight. ***/
 void ParticleFilter::resample() {
-	/*** Resample particles with replacement with probability proportional to their weight. ***/
+
+	cout << "Resample Start. " << endl;
 	/* Normalize the Weight */
 	double sum_weight = 0.0;
 	for (int i = 0; i < num_particles; i++) {
@@ -195,6 +197,8 @@ void ParticleFilter::resample() {
 	}
 
 	particles = sampled_particles;
+
+	cout << "Resample done. " << endl;
 }
 
 Particle ParticleFilter::SetAssociations(Particle& particle, const std::vector<int>& associations, 
