@@ -103,7 +103,7 @@ void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::ve
 			double distance = dist(observations[i].x, observations[i].y, predicted[j].x, predicted[j].y);
 			if (distance < min_distance) {
 				min_distance = distance;
-				observations[i].id = predicted[j].id;
+				observations[i].id = j;
 			}
 		}
 	}
@@ -158,17 +158,17 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 			double x_obs = d_observation.x;
 			double y_obs = d_observation.y;
 
-			Map::single_landmark_s landmark = map_landmarks.landmark_list[d_observation.id];
-			particles[i].associations.push_back(landmark.id_i);
-			particles[i].sense_x.push_back(landmark.x_f);
-			particles[i].sense_y.push_back(landmark.y_f);
+			LandmarkObs associated = predicted[d_observation.id];
+			particles[i].associations.push_back(associated.id);
+			particles[i].sense_x.push_back(associated.x);
+			particles[i].sense_y.push_back(associated.y);
 
 			double gauss_norm = 1.0 / (2 * M_PI * sig_x * sig_y);
-			double exponent = pow((x_obs - landmark.x_f), 2.0) / (2.0 * pow(sig_x, 2.0)) + pow((y_obs - landmark.y_f), 2.0) / (2.0 * pow(sig_y, 2.0));
+			double exponent = pow((x_obs - associated.x), 2.0) / (2.0 * pow(sig_x, 2.0)) + pow((y_obs - associated.y), 2.0) / (2.0 * pow(sig_y, 2.0));
 			double new_weight = (gauss_norm * exp(-1 * exponent));
 			cout << "    exponent " << j << ":" << exponent << endl;
-			cout << "    x - diff " << j << ":" << x_obs - landmark.x_f << endl;
-			cout << "    y - diff " << j << ":" << y_obs - landmark.y_f << endl;
+			cout << "    x - diff " << j << ":" << x_obs - associated.x << endl;
+			cout << "    y - diff " << j << ":" << y_obs - associated.y << endl;
 			cout << "  new_weight " << j << ":" << new_weight << endl;
 			weight *= new_weight;
 		}
