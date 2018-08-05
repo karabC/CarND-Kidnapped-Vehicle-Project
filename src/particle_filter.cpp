@@ -142,7 +142,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 			}
 		}
 
-		cout << "Weight " << i << " -  Landmark in sensor range: "  << predicted.size() <<endl;
+		// cout << "Weight " << i << " -  Landmark in sensor range: "  << predicted.size() <<endl;
 
 		dataAssociation(predicted, map_observations);
 
