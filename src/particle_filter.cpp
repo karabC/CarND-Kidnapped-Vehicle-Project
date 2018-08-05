@@ -30,7 +30,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	normal_distribution<double> distribution_theta(theta, std[2]);
 
 	/*Set the number of particles. */
-	num_particles = 50;
+	num_particles = 30;
 
 	/* Sample the Particles from distributions*/
 	for (int i = 0; i < num_particles; ++i) {
@@ -166,16 +166,16 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 			double gauss_norm = 1.0 / (2 * M_PI * sig_x * sig_y);
 			double exponent = pow((x_obs - associated.x), 2.0) / (2.0 * pow(sig_x, 2.0)) + pow((y_obs - associated.y), 2.0) / (2.0 * pow(sig_y, 2.0));
 			double new_weight = (gauss_norm * exp(-1 * exponent));
-			cout << "    exponent " << j << ":" << exponent << endl;
-			cout << "    x - diff " << j << ":" << x_obs - associated.x << endl;
-			cout << "    y - diff " << j << ":" << y_obs - associated.y << endl;
-			cout << "  new_weight " << j << ":" << new_weight << endl;
+			// cout << "    exponent " << j << ":" << exponent << endl;
+			// cout << "    x - diff " << j << ":" << x_obs - associated.x << endl;
+			// cout << "    y - diff " << j << ":" << y_obs - associated.y << endl;
+			// cout << "  new_weight " << j << ":" << new_weight << endl;
 			weight *= new_weight;
 		}
 
 		particles[i].weight = weight;
 		weights[i] = weight;
-		cout << "Update Weight " << i << ":" << weight <<endl;
+		// cout << "Update Weight " << i << ":" << weight <<endl;
 	}
 	cout << "Update Weight Done. " << endl;
 }
