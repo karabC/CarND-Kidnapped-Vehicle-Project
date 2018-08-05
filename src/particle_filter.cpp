@@ -55,11 +55,13 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 
 	/* Mark Initialization done*/
 	is_initialized = true;
+
+	cout << "Initialization Done " << endl;
 }
 
+/* Add measurements to each particle and add random Gaussian noise. */
 void ParticleFilter::prediction(double delta_t, double std_pos[], double velocity, double yaw_rate) {
-	/* Add measurements to each particle and add random Gaussian noise. */
-
+	cout << "Prediction Start " << endl;
 
 	/* Create distributions of Gaussian noise for x, y, theta*/
 	default_random_engine gen;
@@ -89,6 +91,8 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 		particles[i].y = y + noise_y(gen);
 		particles[i].theta = theta + noise_theta(gen);
 	}
+
+	cout << "Prediction Done " << endl;
 }
 
 void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::vector<LandmarkObs>& observations) {
@@ -107,16 +111,7 @@ void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::ve
 
 void ParticleFilter::updateWeights(double sensor_range, double std_landmark[], 
 		const std::vector<LandmarkObs> &observations, const Map &map_landmarks) {
-	// TODO: Update the weights of each particle using a mult-variate Gaussian distribution. You can read
-	//   more about this distribution here: https://en.wikipedia.org/wiki/Multivariate_normal_distribution
-	// NOTE: The observations are given in the VEHICLE'S coordinate system. Your particles are located
-	//   according to the MAP'S coordinate system. You will need to transform between the two systems.
-	//   Keep in mind that this transformation requires both rotation AND translation (but no scaling).
-	//   The following is a good resource for the theory:
-	//   https://www.willamette.edu/~gorr/classes/GeneralGraphics/Transforms/transforms2d.htm
-	//   and the following is a good resource for the actual equation to implement (look at equation 
-	//   3.33
-	//   http://planning.cs.uiuc.edu/node99.html
+	cout << "Update Weight Start " << endl;
 
 	for (unsigned int i = 0; i < particles.size(); i++) {
 		Particle dp = particles[i];
@@ -173,7 +168,9 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 
 		particles[i].weight = weight;
 		weights[i] = weight;
+		cout << "Update Weight " << i << endl;
 	}
+	cout << "Update Weight Done. " << endl;
 }
 
 void ParticleFilter::resample() {
