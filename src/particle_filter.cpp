@@ -164,11 +164,11 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 			particles[i].sense_y.push_back(landmark.y_f);
 
 			double gauss_norm = 1.0 / (2 * M_PI * sig_x * sig_y);
-			double exponent = pow((x_obs - landmark.x), 2.0) / (2.0 * pow(sig_x, 2.0)) + pow((y_obs - landmark.y), 2.0) / (2.0 * pow(sig_y, 2.0));
+			double exponent = pow((x_obs - landmark.x_f), 2.0) / (2.0 * pow(sig_x, 2.0)) + pow((y_obs - landmark.y_f), 2.0) / (2.0 * pow(sig_y, 2.0));
 			double new_weight = (gauss_norm * exp(-1 * exponent));
 			cout << "    exponent " << j << ":" << exponent << endl;
-			cout << "    x - diff " << j << ":" << x_obs - associated.x << endl;
-			cout << "    y - diff " << j << ":" << y_obs - associated.y << endl;
+			cout << "    x - diff " << j << ":" << x_obs - landmark.x_f << endl;
+			cout << "    y - diff " << j << ":" << y_obs - landmark.y_f << endl;
 			cout << "  new_weight " << j << ":" << new_weight << endl;
 			weight *= new_weight;
 		}
